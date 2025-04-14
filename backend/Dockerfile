@@ -7,15 +7,18 @@ RUN apt-get update && apt-get install -y \
     build-essential \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy requirements first to leverage Docker cache
-COPY requirements.txt .
+# Install Python dependencies
+COPY backend/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the rest of the application
-COPY . .
+# Copy source files
+COPY backend/ .
 
-# Expose the port the app runs on
-EXPOSE 8000
+# Install aimakerspace package in development mode
+RUN pip install -e .
 
-# Command to run the application
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"] 
+# Expose port
+EXPOSE 7860
+
+# Start the app
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "7860"] 

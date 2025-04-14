@@ -1,86 +1,64 @@
 ---
-title: PythonicRAGReact
-emoji: 📉
+title: PythonicRAG
+emoji: 🔍
 colorFrom: blue
 colorTo: purple
 sdk: docker
 pinned: false
-license: apache-2.0
 ---
 
-# Pythonic RAG with React Frontend
+# PythonicRAG
 
-This is a React version of the Pythonic RAG application that allows users to chat with their text files. The application uses a FastAPI backend for handling file uploads and queries, and a React frontend for the user interface.
+A RAG (Retrieval-Augmented Generation) application that allows you to upload PDF documents and ask questions about their content.
 
 ## Features
 
-- File upload support for text files
-- Real-time chat interface
-- Vector database for efficient text retrieval
-- OpenAI integration for intelligent responses
+- Upload PDF documents
+- Ask questions about the content
+- Get AI-powered answers with relevant context
+- Modern React frontend with Material UI
+- FastAPI backend with vector search
 
-## Architecture
+## How to Use
 
-The application consists of two main components packaged in a single Docker container:
+1. Upload a PDF document (up to 2MB in size)
+2. Wait for the document to be processed
+3. Ask questions about the content
+4. View the answers and relevant context
 
-1. Backend (FastAPI):
-   - Handles file uploads
-   - Processes text using RAG (Retrieval Augmented Generation)
-   - Manages vector database
-   - Integrates with OpenAI
+## Environment Variables
 
-2. Frontend (React):
-   - Modern user interface
-   - Real-time chat functionality
-   - File upload component
-   - Response streaming
+The following environment variables need to be set in the Hugging Face Space settings:
+
+- `OPENAI_API_KEY`: Your OpenAI API key for the AI model
+
+## Technical Details
+
+- Frontend: React with Material UI
+- Backend: FastAPI with vector search
+- Database: Vector database for semantic search
+- AI Model: OpenAI's GPT model
 
 ## Local Development
+
+To run locally:
 
 1. Clone the repository
 2. Install dependencies:
    ```bash
-   # Backend
-   cd backend
-   pip install -r requirements.txt
-
-   # Frontend
-   cd frontend
-   npm install
+   cd frontend && npm install
+   cd ../backend && pip install -r requirements.txt
    ```
-
-3. Set up environment variables:
-   ```
-   OPENAI_API_KEY=your_api_key
-   ```
-
-4. Run the application:
+3. Set environment variables
+4. Run the services:
    ```bash
-   # Backend
-   uvicorn app:app --reload
-
-   # Frontend
-   npm start
+   # Terminal 1 (Backend)
+   cd backend && uvicorn main:app --host 0.0.0.0 --port 7860
+   
+   # Terminal 2 (Frontend)
+   cd frontend && npm start
    ```
-
-## Docker Deployment
-
-The application is packaged as a Docker container that combines both frontend and backend services:
-
-1. Build the Docker image:
-   ```bash
-   docker build -t pythonic-rag-react .
-   ```
-
-2. Run the container:
-   ```bash
-   docker run -p 7860:7860 -e OPENAI_API_KEY=your_api_key pythonic-rag-react
-   ```
-
-## Hugging Face Spaces Deployment
-
-The application is deployed on Hugging Face Spaces using Docker. The Dockerfile combines both frontend and backend services into a single container, with the frontend served on port 3000 and the backend on port 7860.
 
 ## License
 
-Apache 2.0
+MIT

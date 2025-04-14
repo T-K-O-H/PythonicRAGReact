@@ -13,10 +13,11 @@ RUN apt-get update && apt-get install -y \
 COPY backend/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Install Node.js dependencies and build frontend
-COPY frontend/package*.json ./frontend/
+# Copy frontend source and install dependencies
+COPY frontend/ ./frontend/
 WORKDIR /app/frontend
-RUN npm install && npm run build
+RUN npm install
+RUN npm run build
 
 # Copy backend source
 WORKDIR /app
@@ -25,12 +26,13 @@ COPY backend/ .
 # Install serve to run the frontend
 RUN npm install -g serve
 
-# Expose the port Hugging Face requires
+# Expose the port (Hugging Face requires 7860)
 EXPOSE 7860
 
 # Set environment variables
 ENV PYTHONUNBUFFERED=1
 ENV PORT=7860
+ENV REACT_APP_API_URL=https://shipmaster1-pythonicragreact.hf.space
 
 # Start both services
 CMD ["sh", "-c", "serve -s frontend/build -l 3000 & uvicorn main:app --host 0.0.0.0 --port 7860"]

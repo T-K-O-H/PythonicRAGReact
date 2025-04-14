@@ -10,6 +10,8 @@ function App() {
   const [error, setError] = useState(null);
   const [uploadStatus, setUploadStatus] = useState(null);
 
+  const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:7860';
+
   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0];
     if (selectedFile && selectedFile.type === 'application/pdf') {
@@ -34,7 +36,7 @@ function App() {
     formData.append('file', file);
 
     try {
-      const response = await axios.post(`${process.env.REACT_APP_API_URL || window.location.origin}/upload`, formData, {
+      const response = await axios.post(`${API_URL}/upload`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -61,7 +63,7 @@ function App() {
     setError(null);
 
     try {
-      const response = await axios.post('http://localhost:8000/query', {
+      const response = await axios.post(`${API_URL}/query`, {
         query: query.trim()
       });
       setResponse(response.data);
