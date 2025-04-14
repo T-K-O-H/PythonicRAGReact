@@ -21,7 +21,7 @@ This is a React version of the Pythonic RAG application that allows users to cha
 
 ## Architecture
 
-The application consists of two main components:
+The application consists of two main components packaged in a single Docker container:
 
 1. Backend (FastAPI):
    - Handles file uploads
@@ -35,7 +35,7 @@ The application consists of two main components:
    - File upload component
    - Response streaming
 
-## Setup
+## Local Development
 
 1. Clone the repository
 2. Install dependencies:
@@ -63,9 +63,23 @@ The application consists of two main components:
    npm start
    ```
 
-## Deployment
+## Docker Deployment
 
-The application is deployed on Hugging Face Spaces using Docker. The Dockerfile combines both frontend and backend services into a single container.
+The application is packaged as a Docker container that combines both frontend and backend services:
+
+1. Build the Docker image:
+   ```bash
+   docker build -t pythonic-rag-react .
+   ```
+
+2. Run the container:
+   ```bash
+   docker run -p 7860:7860 -e OPENAI_API_KEY=your_api_key pythonic-rag-react
+   ```
+
+## Hugging Face Spaces Deployment
+
+The application is deployed on Hugging Face Spaces using Docker. The Dockerfile combines both frontend and backend services into a single container, with the frontend served on port 3000 and the backend on port 7860.
 
 ## License
 
