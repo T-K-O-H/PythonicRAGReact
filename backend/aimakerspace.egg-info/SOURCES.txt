@@ -1,9 +1,0 @@
-pyproject.toml
-aimakerspace/__init__.py
-aimakerspace/text_utils.py
-aimakerspace/vectordatabase.py
-aimakerspace.egg-info/PKG-INFO
-aimakerspace.egg-info/SOURCES.txt
-aimakerspace.egg-info/dependency_links.txt
-aimakerspace.egg-info/requires.txt
-aimakerspace.egg-info/top_level.txt

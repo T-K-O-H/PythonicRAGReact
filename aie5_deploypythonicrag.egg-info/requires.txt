@@ -1,6 +1,0 @@
-chainlit==2.0.4
-numpy==2.2.2
-openai==1.59.9
-pydantic==2.10.1
-pypdf2==3.0.1
-websockets==14.2

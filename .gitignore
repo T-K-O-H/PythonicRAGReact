@@ -32,6 +32,8 @@ yarn-error.log*
 .env.development.local
 .env.test.local
 .env.production.local
+frontend/build/
+frontend/node_modules/
 
 # IDE
 .idea/
@@ -51,7 +53,4 @@ Thumbs.db
 .files/
 
 .cache/
-frontend/node_modules/
-frontend/.cache/
-frontend/build/
 *.pyc
