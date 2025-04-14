@@ -50,3 +50,9 @@ Thumbs.db
 .env
 .chainlit/
 .files/
+
+.cache/
+frontend/node_modules/
+frontend/.cache/
+frontend/build/
+*.pyc
