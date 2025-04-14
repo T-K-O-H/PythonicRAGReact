@@ -342,3 +342,159 @@ For the challenge mode, please instead create a simple FastAPI backend with a si
 You can use the same prompt templates and RAG pipeline as we did here - but you'll need to modify the code to work with FastAPI and React.
 
 Deploy this application to Hugging Face Spaces!
+
+# Document Q&A System
+
+A document question-answering system built with FastAPI backend and React frontend.
+
+## Project Structure
+
+```
+.
+├── backend/               # FastAPI backend
+│   ├── main.py           # Main FastAPI application
+│   └── requirements.txt  # Python dependencies
+└── frontend/             # React frontend
+    ├── src/
+    │   ├── App.js       # Main React component
+    │   └── index.js     # React entry point
+    └── package.json     # Node.js dependencies
+```
+
+## Setup and Running
+
+### Backend
+
+1. Create a virtual environment:
+```bash
+cd backend
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+```
+
+2. Install dependencies:
+```bash
+pip install -r requirements.txt
+```
+
+3. Run the backend server:
+```bash
+python main.py
+```
+
+The backend will be available at http://localhost:8000
+
+### Frontend
+
+1. Install dependencies:
+```bash
+cd frontend
+npm install
+```
+
+2. Start the development server:
+```bash
+npm start
+```
+
+The frontend will be available at http://localhost:3000
+
+## Features
+
+- Upload PDF or text documents
+- Ask questions about the uploaded document
+- Get AI-powered answers based on the document content
+- Modern, responsive UI with Material-UI components
+
+## API Endpoints
+
+- `POST /upload`: Upload a document (PDF or text)
+- `POST /query`: Ask a question about the uploaded document
+
+## Environment Variables
+
+Create a `.env` file in the backend directory with your OpenAI API key:
+```
+OPENAI_API_KEY=your_api_key_here
+```
+
+# RAG Application
+
+A Retrieval-Augmented Generation (RAG) application with a FastAPI backend and React frontend.
+
+## Features
+
+- PDF file upload and processing
+- Text extraction and chunking
+- Vector database for semantic search
+- OpenAI-powered question answering
+
+## Deployment to Hugging Face Spaces
+
+1. Create a new Space on Hugging Face:
+   - Go to https://huggingface.co/spaces
+   - Click "Create new Space"
+   - Choose "Docker" as the SDK
+   - Name your space and set it to private if needed
+
+2. Configure the Space:
+   - Add your OpenAI API key as a secret in the Space settings
+   - Set the following environment variables:
+     - `OPENAI_API_KEY`: Your OpenAI API key
+
+3. Push your code:
+   ```bash
+   git init
+   git add .
+   git commit -m "Initial commit"
+   git remote add origin https://huggingface.co/spaces/your-username/your-space-name
+   git push -u origin main
+   ```
+
+4. Wait for the build to complete and your application will be available at:
+   `https://huggingface.co/spaces/your-username/your-space-name`
+
+## Local Development
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/your-username/rag-application.git
+   cd rag-application
+   ```
+
+2. Set up the environment:
+   ```bash
+   # Backend
+   cd backend
+   python -m venv venv
+   source venv/bin/activate  # or `venv\Scripts\activate` on Windows
+   pip install -r requirements.txt
+
+   # Frontend
+   cd ../frontend
+   npm install
+   ```
+
+3. Start the services:
+   ```bash
+   # Start backend
+   cd backend
+   uvicorn main:app --reload
+
+   # Start frontend (in a new terminal)
+   cd frontend
+   npm start
+   ```
+
+4. Access the application:
+   - Frontend: http://localhost:3000
+   - Backend API: http://localhost:8000
+
+## Environment Variables
+
+- `OPENAI_API_KEY`: Your OpenAI API key
+- `REACT_APP_API_URL`: The URL of your backend API (default: http://localhost:8000)
+
+## License
+
+MIT

@@ -85,36 +85,71 @@ class PDFLoader:
             self.load_file()
             
         except IOError as e:
+            print(f"IOError accessing file at '{self.path}': {str(e)}")
             raise ValueError(f"Cannot access file at '{self.path}': {str(e)}")
         except Exception as e:
+            print(f"Error processing file at '{self.path}': {str(e)}")
             raise ValueError(f"Error processing file at '{self.path}': {str(e)}")
 
     def load_file(self):
-        with open(self.path, 'rb') as file:
-            # Create PDF reader object
-            pdf_reader = PyPDF2.PdfReader(file)
-            
-            # Extract text from each page
-            text = ""
-            for page in pdf_reader.pages:
-                text += page.extract_text() + "\n"
-            
-            self.documents.append(text)
+        try:
+            with open(self.path, 'rb') as file:
+                # Create PDF reader object
+                pdf_reader = PyPDF2.PdfReader(file)
+                
+                if len(pdf_reader.pages) == 0:
+                    raise ValueError("PDF file is empty")
+                
+                # Extract text from each page
+                text = ""
+                for page in pdf_reader.pages:
+                    try:
+                        page_text = page.extract_text()
+                        if page_text:
+                            text += page_text + "\n"
+                    except Exception as e:
+                        print(f"Error extracting text from page: {str(e)}")
+                
+                if not text.strip():
+                    raise ValueError("No text could be extracted from the PDF")
+                
+                self.documents.append(text)
+                print(f"Successfully extracted {len(text)} characters from PDF")
+                
+        except PyPDF2.PdfReadError as e:
+            print(f"PDF read error: {str(e)}")
+            raise ValueError(f"Error reading PDF file: {str(e)}")
+        except Exception as e:
+            print(f"Error in load_file: {str(e)}")
+            raise ValueError(f"Error processing PDF file: {str(e)}")
 
     def load_directory(self):
         for root, _, files in os.walk(self.path):
             for file in files:
                 if file.lower().endswith('.pdf'):
                     file_path = os.path.join(root, file)
-                    with open(file_path, 'rb') as f:
-                        pdf_reader = PyPDF2.PdfReader(f)
-                        
-                        # Extract text from each page
-                        text = ""
-                        for page in pdf_reader.pages:
-                            text += page.extract_text() + "\n"
-                        
-                        self.documents.append(text)
+                    try:
+                        with open(file_path, 'rb') as f:
+                            pdf_reader = PyPDF2.PdfReader(f)
+                            
+                            # Extract text from each page
+                            text = ""
+                            for page in pdf_reader.pages:
+                                try:
+                                    page_text = page.extract_text()
+                                    if page_text:
+                                        text += page_text + "\n"
+                                except Exception as e:
+                                    print(f"Error extracting text from page in {file}: {str(e)}")
+                            
+                            if text.strip():
+                                self.documents.append(text)
+                                print(f"Successfully extracted {len(text)} characters from {file}")
+                            else:
+                                print(f"No text could be extracted from {file}")
+                                
+                    except Exception as e:
+                        print(f"Error processing {file}: {str(e)}")
 
     def load_documents(self):
         self.load()

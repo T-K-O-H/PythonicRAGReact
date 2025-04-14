@@ -1,31 +1,36 @@
+FROM python:3.9-slim
 
-# Get a distribution that has uv already installed
-FROM ghcr.io/astral-sh/uv:python3.13-bookworm-slim
+WORKDIR /app
 
-# Add user - this is the user that will run the app
-# If you do not set user, the app will run as root (undesirable)
-RUN useradd -m -u 1000 user
-USER user
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    nodejs \
+    npm \
+    && rm -rf /var/lib/apt/lists/*
 
-# Set the home directory and path
-ENV HOME=/home/user \
-    PATH=/home/user/.local/bin:$PATH        
+# Install Python dependencies
+COPY backend/requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
-ENV UVICORN_WS_PROTOCOL=websockets
+# Install Node.js dependencies
+COPY frontend/package*.json ./frontend/
+WORKDIR /app/frontend
+RUN npm install
 
+# Copy frontend source
+COPY frontend/ .
+RUN npm run build
 
-# Set the working directory
-WORKDIR $HOME/app
+# Copy backend source
+WORKDIR /app
+COPY backend/ .
 
-# Copy the app to the container
-COPY --chown=user . $HOME/app
+# Install serve to run the frontend
+RUN npm install -g serve
 
-# Install the dependencies
-# RUN uv sync --frozen
-RUN uv sync
-
-# Expose the port
+# Expose the port Hugging Face requires
 EXPOSE 7860
 
-# Run the app
-CMD ["uv", "run", "chainlit", "run", "app.py", "--host", "0.0.0.0", "--port", "7860"]
+# Start both services
+CMD ["sh", "-c", "serve -s frontend/build -l 3000 & uvicorn main:app --host 0.0.0.0 --port 7860"]

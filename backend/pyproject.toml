@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "aimakerspace"
+version = "0.1.0"
+description = "AI Maker Space RAG implementation"
+requires-python = ">=3.8"
+dependencies = [
+    "openai>=1.0.0",
+    "PyPDF2>=3.0.0",
+    "python-dotenv>=0.19.0",
+    "numpy>=1.21.0",
+    "fastapi>=0.68.0",
+    "uvicorn>=0.15.0",
+    "python-multipart>=0.0.5",
+]
+
+[tool.setuptools]
+packages = ["aimakerspace"] 
